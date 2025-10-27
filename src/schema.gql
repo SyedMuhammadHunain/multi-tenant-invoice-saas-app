@@ -1,0 +1,228 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthResponse {
+  tenant: TenantResponse!
+  token: String!
+  user: UserResponse!
+}
+
+type Client {
+  _id: ID!
+  address: String
+  company: String
+  createdAt: DateTime!
+  email: String!
+  isActive: Boolean!
+  name: String!
+  phone: String
+  taxId: String
+  tenantId: ID!
+  updatedAt: DateTime!
+}
+
+input CreateClientInput {
+  address: String
+  company: String
+  email: String!
+  name: String!
+  phone: String
+  taxId: String
+}
+
+input CreateInvoiceInput {
+  clientId: ID!
+  dueDate: DateTime!
+  issueDate: DateTime!
+  items: [InvoiceItemInput!]!
+  notes: String
+  taxRate: Float!
+}
+
+type DashboardStats {
+  overdueInvoices: Int!
+  pendingAmount: Float!
+  totalClients: Int!
+  totalInvoices: Int!
+  totalRevenue: Float!
+  unpaidInvoices: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Invoice {
+  _id: ID!
+  client: Client
+  clientId: ID!
+  createdAt: DateTime!
+  dueDate: DateTime!
+  invoiceNumber: String!
+  issueDate: DateTime!
+  items: [InvoiceItem!]!
+  notes: String
+  paidDate: DateTime
+  pdfUrl: String
+  status: String!
+  subtotal: Float!
+  taxAmount: Float!
+  taxRate: Float!
+  tenantId: ID!
+  total: Float!
+  updatedAt: DateTime!
+}
+
+type InvoiceItem {
+  description: String!
+  quantity: Int!
+  total: Float!
+  unitPrice: Float!
+}
+
+input InvoiceItemInput {
+  description: String!
+  quantity: Int!
+  total: Float
+  unitPrice: Float!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createClient(createClientInput: CreateClientInput!): Client!
+  createInvoice(createInvoiceInput: CreateInvoiceInput!): Invoice!
+  deleteClient(id: String!): Boolean!
+  deleteInvoice(id: String!): Boolean!
+  login(loginInput: LoginInput!): AuthResponse!
+  markInvoiceAsPaid(id: String!): Invoice!
+  register(registerInput: RegisterInput!): AuthResponse!
+  sendInvoice(id: String!): Boolean!
+  updateClient(updateClientInput: UpdateClientInput!): Client!
+  updateInvoice(updateInvoiceInput: UpdateInvoiceInput!): Invoice!
+  updateTenant(updateTenantInput: UpdateTenantInput!): Tenant!
+  uploadLogo(file: String!): String!
+}
+
+type Query {
+  client(id: String!): Client!
+  clients: [Client!]!
+  dashboardStats: DashboardStats!
+  invoice(id: String!): Invoice!
+  invoices(status: String): [Invoice!]!
+  me: User!
+  revenueByMonth(year: Int!): [RevenueByMonth!]!
+  tenant: Tenant!
+  topClients(limit: Int = 5): [TopClient!]!
+}
+
+input RegisterInput {
+  companyName: String!
+  email: String!
+  name: String!
+  password: String!
+}
+
+type RevenueByMonth {
+  invoiceCount: Int!
+  month: String!
+  revenue: Float!
+}
+
+type Tenant {
+  _id: ID!
+  address: String
+  brandColor: String
+  companyName: String!
+  createdAt: DateTime!
+  email: String!
+  isActive: Boolean!
+  logo: String
+  phone: String
+  plan: String!
+  taxId: String
+  updatedAt: DateTime!
+  website: String
+}
+
+type TenantResponse {
+  _id: ID!
+  address: String
+  brandColor: String
+  companyName: String!
+  createdAt: DateTime!
+  email: String!
+  isActive: Boolean!
+  logo: String
+  phone: String
+  plan: String!
+  taxId: String
+  updatedAt: DateTime!
+  website: String
+}
+
+type TopClient {
+  clientId: ID!
+  clientName: String!
+  invoiceCount: Int!
+  totalRevenue: Float!
+}
+
+input UpdateClientInput {
+  address: String
+  company: String
+  email: String
+  id: ID!
+  name: String
+  phone: String
+  taxId: String
+}
+
+input UpdateInvoiceInput {
+  dueDate: DateTime
+  id: ID!
+  issueDate: DateTime
+  items: [InvoiceItemInput!]
+  notes: String
+  status: String
+  subtotal: Float
+  taxAmount: Float
+  taxRate: Float
+  total: Float
+}
+
+input UpdateTenantInput {
+  address: String
+  brandColor: String
+  companyName: String
+  phone: String
+  taxId: String
+  website: String
+}
+
+type User {
+  _id: ID!
+  createdAt: DateTime!
+  email: String!
+  isActive: Boolean!
+  name: String!
+  role: String!
+  tenantId: ID!
+  updatedAt: DateTime!
+}
+
+type UserResponse {
+  _id: ID!
+  createdAt: DateTime!
+  email: String!
+  isActive: Boolean!
+  name: String!
+  role: String!
+  tenantId: ID!
+  updatedAt: DateTime!
+}
